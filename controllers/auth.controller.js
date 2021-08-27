@@ -1,4 +1,3 @@
-const { validateEmail } = require('../helpers/auth.helper');
 const CustomError = require('../errors/customError');
 const { User } = require('../db');
 
@@ -8,12 +7,6 @@ module.exports = {
         try {
             // if body don't have role, user schema has default value for role
             const { email, password, role } = req.body;
-
-            const validationResult = validateEmail(email);
-
-            if (!validationResult) {
-                throw new CustomError('Invalid format of email', 400);
-            }
 
             await User.create({
                 email,

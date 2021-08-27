@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { usersRouter, authRouter } = require('./routers');
+const { usersRouter, authRouter, laptopRouter } = require('./routers');
 const { PORT } = require('./constants/config');
 
 mongoose.connect('mongodb://localhost:27017/database');
@@ -14,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', authRouter);
 
 app.use('/users', usersRouter);
+
+app.use('/laptops', laptopRouter);
 
 app.use(_errorHandler);
 

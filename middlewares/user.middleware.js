@@ -1,5 +1,6 @@
 const { User } = require('../db');
 const CustomError = require('../errors/customError');
+const { validateEmail } = require('../helpers/auth.helper');
 
 module.exports = {
     isEmailInUse: async (req, res, next) => {
@@ -47,6 +48,36 @@ module.exports = {
             }
 
             req.user = user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isEmailFormatCorrect: (req, res, next) => {
+        try {
+            const { email } = req.body;
+
+            const validationResult = validateEmail(email);
+
+            if (!validationResult) {
+                throw new CustomError('Invalid format of email', 400);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isFullDataInUserRequest: (req, res, next) => {
+        try {
+            const { email, password } = req.body;
+
+            if (!email || !password) {
+                throw new CustomError('Some data missed', 400);
+            }
 
             next();
         } catch (e) {

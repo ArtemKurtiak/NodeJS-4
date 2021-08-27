@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { ADMIN, USER } = require('../constants/user.roles');
+const { ADMIN, USER } = require('../constants/user-roles.enum');
 
 const User = new Schema({
     email: {

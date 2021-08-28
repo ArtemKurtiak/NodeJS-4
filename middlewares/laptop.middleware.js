@@ -1,5 +1,6 @@
 const CustomError = require('../errors/customError');
 const { Laptop } = require('../db');
+const { BAD_REQUEST, NOT_FOUND } = require('../constants/error-codes.enum');
 
 module.exports = {
     isFullDataInLaptopRequest: (req, res, next) => {
@@ -7,7 +8,7 @@ module.exports = {
             const { model, price } = req.body;
 
             if (!model || !price) {
-                throw new CustomError('Some data missed', 400);
+                throw new CustomError('Some data missed', BAD_REQUEST);
             }
 
             next();
@@ -23,7 +24,7 @@ module.exports = {
             const laptop = await Laptop.findById(laptopId);
 
             if (!laptop) {
-                throw new CustomError('Laptop not found', 404);
+                throw new CustomError('Laptop not found', NOT_FOUND);
             }
 
             next();

@@ -1,4 +1,5 @@
 const { Laptop } = require('../db');
+const { CREATED } = require('../constants/error-codes.enum');
 
 module.exports = {
     getAllLaptops: async (req, res, next) => {
@@ -6,7 +7,6 @@ module.exports = {
             const laptops = await Laptop.find({});
 
             res
-                .status(200)
                 .json(laptops);
         } catch (e) {
             next(e);
@@ -20,7 +20,7 @@ module.exports = {
             });
 
             res
-                .status(201)
+                .status(CREATED)
                 .json({ message: 'Created' });
         } catch (e) {
             next(e);
@@ -34,7 +34,6 @@ module.exports = {
             await Laptop.findByIdAndUpdate(laptopId, { ...req.body });
 
             res
-                .status(200)
                 .json({ message: 'Updated' });
         } catch (e) {
             next(e);
@@ -48,7 +47,6 @@ module.exports = {
             await Laptop.findByIdAndDelete(laptopId);
 
             res
-                .status(200)
                 .json({ message: 'Deleted' });
         } catch (e) {
             next(e);
@@ -62,7 +60,6 @@ module.exports = {
             const laptop = await Laptop.findById(laptopId);
 
             res
-                .status(200)
                 .json(laptop);
         } catch (e) {
             next(e);

@@ -1,6 +1,7 @@
 const { User } = require('../db');
 const CustomError = require('../errors/customError');
 const { validateEmail } = require('../helpers/auth.helper');
+const { CONFLICT, NOT_FOUND, BAD_REQUEST } = require('../constants/error-codes.enum');
 
 module.exports = {
     isEmailInUse: async (req, res, next) => {
@@ -10,7 +11,7 @@ module.exports = {
             const user = await User.findOne({ email });
 
             if (user) {
-                throw new CustomError('Email already in use', 409);
+                throw new CustomError('Email already in use', CONFLICT);
             }
 
             next();
@@ -26,7 +27,7 @@ module.exports = {
             const user = await User.findOne({ email });
 
             if (!user) {
-                next(new CustomError('User not found', 404));
+                next(new CustomError('User not found', NOT_FOUND));
             }
 
             req.user = user;
@@ -44,7 +45,7 @@ module.exports = {
             const user = await User.findById(userId);
 
             if (!user) {
-                next(new CustomError('User not found', 404));
+                next(new CustomError('User not found', NOT_FOUND));
             }
 
             req.user = user;
@@ -62,7 +63,7 @@ module.exports = {
             const validationResult = validateEmail(email);
 
             if (!validationResult) {
-                throw new CustomError('Invalid format of email', 400);
+                throw new CustomError('Invalid format of email', BAD_REQUEST);
             }
 
             next();
@@ -76,7 +77,7 @@ module.exports = {
             const { email, password } = req.body;
 
             if (!email || !password) {
-                throw new CustomError('Some data missed', 400);
+                throw new CustomError('Some data missed', BAD_REQUEST);
             }
 
             next();

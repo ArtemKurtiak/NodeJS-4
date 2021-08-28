@@ -1,5 +1,6 @@
 const CustomError = require('../errors/customError');
 const { User } = require('../db');
+const { CREATED, BAD_REQUEST } = require('../constants/error-codes.enum');
 
 module.exports = {
 
@@ -15,7 +16,7 @@ module.exports = {
             });
 
             res
-                .status(201)
+                .status(CREATED)
                 .json({
                     message: 'Success'
                 });
@@ -30,11 +31,10 @@ module.exports = {
             const { user } = req;
 
             if (user.password !== password) {
-                throw new CustomError('Incorrect credentials', 400);
+                throw new CustomError('Incorrect credentials', BAD_REQUEST);
             }
 
             res
-                .status(200)
                 .json({ message: 'Success' });
         } catch (e) {
             return next(e);

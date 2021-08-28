@@ -1,4 +1,5 @@
 const { User } = require('../db');
+const { CREATED } = require('../constants/error-codes.enum');
 
 module.exports = {
 
@@ -7,7 +8,6 @@ module.exports = {
             const users = await User.find({});
 
             res
-                .status(200)
                 .json(users);
         } catch (e) {
             next(e);
@@ -26,7 +26,7 @@ module.exports = {
             });
 
             res
-                .status(201)
+                .status(CREATED)
                 .json({
                     message: 'Success'
                 });
@@ -40,7 +40,6 @@ module.exports = {
             const { user } = req;
 
             res
-                .status(200)
                 .json(user);
         } catch (e) {
             next(e);
@@ -54,7 +53,6 @@ module.exports = {
             await User.findByIdAndDelete(userId);
 
             res
-                .status(200)
                 .json({ message: 'Deleted' });
         } catch (e) {
             next(e);
@@ -69,7 +67,6 @@ module.exports = {
             await User.findByIdAndUpdate(userId, userData);
 
             res
-                .status(200)
                 .json({ message: 'Updated' });
         } catch (e) {
             next(e);
